@@ -34,3 +34,33 @@ pub fn get_input(day: u8, year: u16) -> String {
     file.read_to_string(&mut result).expect("Unable to read file");
     return result;
 }
+
+pub mod point {
+    use std::ops::{Add, AddAssign};
+
+    #[derive(Clone, Copy, Eq, PartialEq, Hash)]
+    pub struct Point2D<T> {
+        pub x: T,
+        pub y: T,
+    }
+
+    impl <T: Add> Point2D<T> {
+        pub fn new(x: T, y: T) -> Point2D<T> {
+            Point2D {x, y}
+        }
+    }
+
+    impl <T: Add<Output=T>> Add for Point2D<T> {
+        type Output = Point2D<T>;
+
+        fn add(self, other: Self) -> Self {
+            Point2D::new(self.x + other.x, self.y + other.y)
+        }
+    }
+
+    impl <T: Add<Output=T> + Copy> AddAssign for Point2D<T> {
+        fn add_assign(&mut self, other: Self) {
+            *self = *self + other;
+        }
+    }
+}
